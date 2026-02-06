@@ -8,6 +8,7 @@ const page = () => {
   const router = useRouter();
   const params = useSearchParams();
   const queryId = params.get("id");
+  const isEmbed = params.get("embed") === "true";
   if (!queryId) {
     return (
       <div className="flex flex-col items-center justify-center h-screen">
@@ -19,7 +20,7 @@ const page = () => {
   }
   return (
 
-    <PresentationPage presentation_id={queryId} />
+    <PresentationPage presentation_id={queryId} embed={isEmbed} />
 
   );
 };

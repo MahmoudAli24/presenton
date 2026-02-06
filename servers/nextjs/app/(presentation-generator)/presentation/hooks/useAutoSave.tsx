@@ -53,6 +53,11 @@ export const useAutoSave = ({
                 // Update last saved data reference
                 lastSavedDataRef.current = currentDataString;
 
+                // Notify parent frame (for embed mode)
+                if (window.parent !== window) {
+                    window.parent.postMessage({ type: 'presenton:saved' }, '*');
+                }
+
                 console.log('✅ Auto-save successful');
 
             } catch (error) {

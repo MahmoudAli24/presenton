@@ -51,7 +51,7 @@ export function SortableSlide({ slide, index, selectedSlide, onSlideClick, rende
             {...attributes}
             {...listeners}
             onClick={handleClick}
-            className={` cursor-pointer border-[3px] relative  p-1 shadow-lg   rounded-md transition-all duration-200 ${selectedSlide === index ? ' border-[#5141e5]' : 'border-gray-300'
+            className={` cursor-pointer border-[3px] relative  p-1 shadow-lg   rounded-md transition-all duration-200 ${selectedSlide === index ? ' border-[#0066ff]' : 'border-gray-300'
                 }`}
         >
             <div className=" slide-box relative z-50  overflow-hidden aspect-video">

@@ -25,6 +25,7 @@ import { useFontLoader } from "../../hooks/useFontLoader";
 import { usePresentationUndoRedo } from "../hooks/PresentationUndoRedo";
 const PresentationPage: React.FC<PresentationPageProps> = ({
   presentation_id,
+  embed = false,
 }) => {
   const pathname = usePathname();
   // State management
@@ -124,26 +125,30 @@ const PresentationPage: React.FC<PresentationPageProps> = ({
 
   return (
     <div className="h-screen flex overflow-hidden flex-col">
-      <div className="fixed right-6 top-[5.2rem] z-50">
-        {isSaving && <Loader2 className="w-6 h-6 animate-spin text-blue-500" />}
-      </div>
+      {!embed && (
+        <div className="fixed right-6 top-[5.2rem] z-50">
+          {isSaving && <Loader2 className="w-6 h-6 animate-spin text-blue-500" />}
+        </div>
+      )}
 
-      <Header presentation_id={presentation_id} currentSlide={selectedSlide} />
-      <Help />
+      {!embed && <Header presentation_id={presentation_id} currentSlide={selectedSlide} />}
+      {!embed && <Help />}
 
       <div
         style={{
           background: "#c8c7c9",
         }}
-        className="flex flex-1 relative pt-6"
+        className={`flex flex-1 relative ${embed ? "pt-2" : "pt-6"}`}
       >
-        <SidePanel
-          selectedSlide={selectedSlide}
-          onSlideClick={handleSlideClick}
-          loading={loading}
-          isMobilePanelOpen={isMobilePanelOpen}
-          setIsMobilePanelOpen={setIsMobilePanelOpen}
-        />
+        {!embed && (
+          <SidePanel
+            selectedSlide={selectedSlide}
+            onSlideClick={handleSlideClick}
+            loading={loading}
+            isMobilePanelOpen={isMobilePanelOpen}
+            setIsMobilePanelOpen={setIsMobilePanelOpen}
+          />
+        )}
         
         <div className="flex-1 h-[calc(100vh-100px)] overflow-y-auto">
           <div

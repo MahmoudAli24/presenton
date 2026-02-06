@@ -2,7 +2,7 @@ import React from 'react'
 import SettingPage from './SettingPage'
 
 export const metadata = {
-  title: 'Settings | Presenton',
+  title: 'Settings | Ahlan',
   description: 'Settings page',
 }
 const page = () => {

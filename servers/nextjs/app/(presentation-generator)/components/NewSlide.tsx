@@ -31,6 +31,16 @@ const NewSlide = ({
       };
       dispatch(addNewSlide({ slideData: newSlide, index }));
       setShowNewSlideSelection(false);
+      // Notify parent (Ahlan) about the chargeable slide addition
+      if (window.parent !== window) {
+        window.parent.postMessage(
+          {
+            type: "presenton:slide-edited",
+            payload: { editType: "add_slide" },
+          },
+          "*"
+        );
+      }
     } catch (error: any) {
       console.error(error);
       toast.error("Error adding new slide");

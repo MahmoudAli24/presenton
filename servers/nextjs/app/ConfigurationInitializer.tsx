@@ -105,19 +105,27 @@ export function ConfigurationInitializer({ children }: { children: React.ReactNo
   }
 
 
+  // Check if we're in embed mode (loaded inside an iframe)
+  const isEmbed = typeof window !== 'undefined' && window.self !== window.top;
+
+  if (isEmbed && isLoading) {
+    // Skip splash screen in embed mode — show nothing while loading
+    return null;
+  }
+
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#E9E8F8] via-[#F5F4FF] to-[#E0DFF7] flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-[#E8F0FF] via-[#F5F4FF] to-[#FFE8FF] flex items-center justify-center p-4">
         <div className="max-w-md w-full">
           <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-8 text-center">
             {/* Logo/Branding */}
             <div className="mb-6">
               <img
                 src="/Logo.png"
-                alt="PresentOn"
+                alt="Ahlan"
                 className="h-12 mx-auto mb-4 opacity-90"
               />
-              <div className="w-16 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto rounded-full"></div>
+              <div className="w-16 h-1 bg-gradient-to-r from-[#0066ff] to-[#8b00ff] mx-auto rounded-full"></div>
             </div>
 
             {/* Loading Text */}
@@ -133,9 +141,9 @@ export function ConfigurationInitializer({ children }: { children: React.ReactNo
             {/* Progress Indicator */}
             <div className="mt-6">
               <div className="flex space-x-1 justify-center">
-                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-                <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
-                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+                <div className="w-2 h-2 bg-[#0066ff] rounded-full animate-pulse"></div>
+                <div className="w-2 h-2 bg-[#8b00ff] rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+                <div className="w-2 h-2 bg-[#ff00ff] rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
               </div>
             </div>
           </div>
