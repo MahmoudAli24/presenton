@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const AHLAN_ORIGIN = process.env.NEXT_PUBLIC_AHLAN_ORIGIN || process.env.AHLAN_ORIGIN || "";
+const AHLAN_ORIGIN = process.env.AHLAN_ORIGIN || process.env.NEXT_PUBLIC_AHLAN_ORIGIN || "";
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "";
 const COOKIE_NAME = "presenton-admin";
 
