@@ -1,4 +1,4 @@
-const ahlanOrigin = process.env.NEXT_PUBLIC_AHLAN_ORIGIN || "";
+const ahlanOrigin = process.env.NEXT_PUBLIC_AHLAN_ORIGIN || process.env.AHLAN_ORIGIN || "";
 
 const nextConfig = {
   reactStrictMode: false,
