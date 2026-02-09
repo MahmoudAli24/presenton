@@ -21,6 +21,7 @@ import { usePathname } from "next/navigation";
 import { trackEvent, MixpanelEvent } from "@/utils/mixpanel";
 import NewSlide from "../../components/NewSlide";
 import { addToHistory } from "@/store/slices/undoRedoSlice";
+import { postMessageToParent } from "@/lib/postMessage";
 
 interface SlideContentProps {
   slide: any;
@@ -62,19 +63,14 @@ const SlideContent = ({ slide, index, presentationId }: SlideContentProps) => {
         dispatch(updateSlide({ index: slide.index, slide: response }));
         toast.success("Slide updated successfully");
         // Notify parent (Ahlan) about the chargeable AI edit
-        if (window.parent !== window) {
-          window.parent.postMessage(
-            {
-              type: "presenton:slide-edited",
-              payload: {
-                slideId: slide.id,
-                slideIndex: slide.index,
-                editType: "ai_edit",
-              },
-            },
-            "*"
-          );
-        }
+        postMessageToParent({
+          type: "presenton:slide-edited",
+          payload: {
+            slideId: slide.id,
+            slideIndex: slide.index,
+            editType: "ai_edit",
+          },
+        });
       }
     } catch (error: any) {
       console.error("Error in slide editing:", error);

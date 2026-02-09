@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
 import { PresentationGenerationApi } from '../../services/api/presentation-generation';
 import { addToHistory } from '@/store/slices/undoRedoSlice';
+import { postMessageToParent } from '@/lib/postMessage';
 
 interface UseAutoSaveOptions {
     debounceMs?: number;
@@ -54,9 +55,7 @@ export const useAutoSave = ({
                 lastSavedDataRef.current = currentDataString;
 
                 // Notify parent frame (for embed mode)
-                if (window.parent !== window) {
-                    window.parent.postMessage({ type: 'presenton:saved' }, '*');
-                }
+                postMessageToParent({ type: 'presenton:saved' });
 
                 console.log('✅ Auto-save successful');
 

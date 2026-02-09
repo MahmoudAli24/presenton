@@ -6,6 +6,7 @@ import { useLayout, FullDataInfo } from "../context/LayoutContext";
 import { v4 as uuidv4 } from "uuid";
 import { Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { postMessageToParent } from '@/lib/postMessage';
 interface NewSlideProps {
   setShowNewSlideSelection: (show: boolean) => void;
   templateID: string;
@@ -32,15 +33,10 @@ const NewSlide = ({
       dispatch(addNewSlide({ slideData: newSlide, index }));
       setShowNewSlideSelection(false);
       // Notify parent (Ahlan) about the chargeable slide addition
-      if (window.parent !== window) {
-        window.parent.postMessage(
-          {
-            type: "presenton:slide-edited",
-            payload: { editType: "add_slide" },
-          },
-          "*"
-        );
-      }
+      postMessageToParent({
+        type: "presenton:slide-edited",
+        payload: { editType: "add_slide" },
+      });
     } catch (error: any) {
       console.error(error);
       toast.error("Error adding new slide");

@@ -1,8 +1,26 @@
+const ahlanOrigin = process.env.NEXT_PUBLIC_AHLAN_ORIGIN || "";
 
 const nextConfig = {
   reactStrictMode: false,
   distDir: ".next-build",
-  
+
+  async headers() {
+    const frameAncestors = ahlanOrigin
+      ? `frame-ancestors 'self' ${ahlanOrigin}`
+      : "frame-ancestors 'self'";
+
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          {
+            key: "Content-Security-Policy",
+            value: frameAncestors,
+          },
+        ],
+      },
+    ];
+  },
 
   // Rewrites for development - proxy font requests to FastAPI backend
   async rewrites() {
