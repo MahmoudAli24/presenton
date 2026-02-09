@@ -47,7 +47,9 @@ async function isValidAdmin(request: NextRequest): Promise<boolean> {
 }
 
 function block(request: NextRequest) {
-  return NextResponse.redirect(new URL("/blocked", request.url));
+  const url = new URL("/blocked", request.url);
+  url.protocol = "http:";
+  return NextResponse.rewrite(url);
 }
 
 export async function middleware(request: NextRequest) {
