@@ -167,19 +167,18 @@ const startServers = async () => {
 
   const ollamaProcess = spawn("ollama", ["serve"], {
     cwd: "/",
-    stdio: "inherit",
+    stdio: "ignore",
     env: process.env,
   });
 
-  ollamaProcess.on("error", (err) => {
-    console.error("Ollama process failed to start:", err);
+  ollamaProcess.on("error", () => {
+    // Ollama is optional - ignore if not installed
   });
 
-  // Keep the Node process alive until both servers exit
+  // Keep the Node process alive until a core server exits
   const exitCode = await Promise.race([
     new Promise((resolve) => fastApiProcess.on("exit", resolve)),
     new Promise((resolve) => nextjsProcess.on("exit", resolve)),
-    new Promise((resolve) => ollamaProcess.on("exit", resolve)),
   ]);
 
   console.log(`One of the processes exited. Exit code: ${exitCode}`);
