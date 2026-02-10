@@ -1,6 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const AHLAN_ORIGIN = process.env.AHLAN_ORIGIN || process.env.NEXT_PUBLIC_AHLAN_ORIGIN || "";
+const STATIC_ORIGINS = ["https://test.ahlan.ai", "https://ahlan.ai"];
+const AHLAN_ORIGINS = [...new Set([
+  ...STATIC_ORIGINS,
+  ...(process.env.AHLAN_ORIGIN || process.env.NEXT_PUBLIC_AHLAN_ORIGIN || "")
+    .split(",")
+    .map((o) => o.trim())
+    .filter(Boolean),
+])];
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "";
 const COOKIE_NAME = "presenton-admin";
 
@@ -8,13 +15,14 @@ const COOKIE_NAME = "presenton-admin";
 const ALLOWED_PAGE_PATHS = ["/presentation", "/pdf-maker", "/schema", "/blocked", "/login"];
 
 function originMatches(headerValue: string | null): boolean {
-  if (!headerValue || !AHLAN_ORIGIN) return false;
+  if (!headerValue || AHLAN_ORIGINS.length === 0) return false;
+  let resolved: string;
   try {
-    const url = new URL(headerValue);
-    return url.origin === AHLAN_ORIGIN;
+    resolved = new URL(headerValue).origin;
   } catch {
-    return headerValue === AHLAN_ORIGIN;
+    resolved = headerValue;
   }
+  return AHLAN_ORIGINS.includes(resolved);
 }
 
 function isLocalhost(request: NextRequest): boolean {
@@ -75,8 +83,8 @@ export async function middleware(request: NextRequest) {
     return block(request);
   }
 
-  // If AHLAN_ORIGIN is not configured, skip origin enforcement (dev mode)
-  if (!AHLAN_ORIGIN) {
+  // If no AHLAN_ORIGINS configured, skip origin enforcement (dev mode)
+  if (AHLAN_ORIGINS.length === 0) {
     return NextResponse.next();
   }
 

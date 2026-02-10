@@ -1,12 +1,17 @@
-const ahlanOrigin = process.env.AHLAN_ORIGIN || process.env.NEXT_PUBLIC_AHLAN_ORIGIN || "";
+const STATIC_ORIGINS = ["https://test.ahlan.ai", "https://ahlan.ai"];
+const envOrigins = (process.env.AHLAN_ORIGIN || process.env.NEXT_PUBLIC_AHLAN_ORIGIN || "")
+  .split(",")
+  .map((o) => o.trim())
+  .filter(Boolean);
+const ahlanOrigins = [...new Set([...STATIC_ORIGINS, ...envOrigins])];
 
 const nextConfig = {
   reactStrictMode: false,
   distDir: ".next-build",
 
   async headers() {
-    const frameAncestors = ahlanOrigin
-      ? `frame-ancestors 'self' ${ahlanOrigin}`
+    const frameAncestors = ahlanOrigins.length
+      ? `frame-ancestors 'self' ${ahlanOrigins.join(" ")}`
       : "frame-ancestors 'self'";
 
     return [
